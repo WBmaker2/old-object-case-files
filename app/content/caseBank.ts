@@ -1,0 +1,150 @@
+import type { AssetAttribution, CaseFile, EvidenceStatus } from "./types";
+
+export const evidenceLabels: Record<EvidenceStatus, string> = {
+  observed: "사진에서 보여요",
+  documented: "박물관 기록이에요",
+  inferred: "근거로 이렇게 추론해요",
+  unknown: "아직 알 수 없어요",
+};
+
+export const assetManifest: readonly AssetAttribution[] = [
+  {
+    id: "handaxe-photo",
+    localPath: "/assets/artifacts/handaxe-original.jpg",
+    originalFileName: "ssu018710-000-90000.jpg",
+    institution: "국립중앙박물관",
+    artifactTitle: "주먹도끼",
+    collectionNumber: "신수18710",
+    licenseType: "KOGL-1",
+    licenseUrl: "https://www.kogl.or.kr/info/licenseType1.do",
+    requiredCredit: "국립중앙박물관, 주먹도끼(신수18710), 공공누리 제1유형",
+    recordUrl: "https://www.museum.go.kr/MUSEUM/contents/M0502000000.do?schM=view&searchId=search&relicId=5200",
+    imageUrl: "https://www.museum.go.kr/relic_image/PS01001001/ssu000/2024/1220164520928/ssu018710-000-90000.jpg",
+    checkedAt: "2026-07-17",
+    originalSha256: "f8c8e55fa1c4c10c330f0c344012c6f5e432ee6544ce274b5d1642df78b38c39",
+    derivativeSha256: "f8c8e55fa1c4c10c330f0c344012c6f5e432ee6544ce274b5d1642df78b38c39",
+    derivativeOperations: ["공식 JPEG 원본을 그대로 정적 자산으로 포함; 자르기·크기 변경·포맷 변환 없음."],
+  },
+  {
+    id: "figurine-lid-photo",
+    localPath: "/assets/artifacts/figurine-lid-original.jpg",
+    originalFileName: "mng_no=424&atch=atch_img1",
+    institution: "국립경주박물관",
+    artifactTitle: "토우장식 뚜껑",
+    collectionNumber: "경주5772",
+    licenseType: "KOGL-1",
+    licenseUrl: "https://www.kogl.or.kr/info/licenseType1.do",
+    requiredCredit: "국립경주박물관, 토우장식 뚜껑(경주5772), 공공누리 제1유형",
+    recordUrl: "https://gyeongju.museum.go.kr/kor/html/sub04/0406.html?GotoPage=2&dvs_code=&mng_no=424&mode=V",
+    imageUrl: "https://gyeongju.museum.go.kr/_prog/download/?site_dvs_cd=kor&func_gbn_cd=relic_data&mng_no=424&atch=atch_img1",
+    checkedAt: "2026-07-17",
+    originalSha256: "83c6e91aa5848f9a798628e9f4e653d5beb937594e453c9e15e72da19534e910",
+    derivativeSha256: "83c6e91aa5848f9a798628e9f4e653d5beb937594e453c9e15e72da19534e910",
+    derivativeOperations: ["공식 JPEG 원본을 그대로 정적 자산으로 포함; 자르기·크기 변경·포맷 변환 없음."],
+  },
+  {
+    id: "celadon-die-photo",
+    localPath: "/assets/artifacts/celadon-die-original.jpg",
+    originalFileName: "duk006421-00-00.jpg",
+    institution: "국립중앙박물관",
+    artifactTitle: "청자 상감 주사위",
+    collectionNumber: "덕수6421",
+    licenseType: "KOGL-1",
+    licenseUrl: "https://www.kogl.or.kr/info/licenseType1.do",
+    requiredCredit: "국립중앙박물관, 청자 상감 주사위(덕수6421), 공공누리 제1유형",
+    recordUrl: "https://www.museum.go.kr/MUSEUM/contents/M0502000000.do?relicId=1495&schM=view&searchId=search",
+    imageUrl: "https://www.museum.go.kr/relic_image/PS01001001/duk006/2017/0512090608004/duk006421-00-00.jpg",
+    checkedAt: "2026-07-17",
+    originalSha256: "c71c253f75e0d16a0287d3201f2b1a284f82a77b8d882d0510ea085bc960b651",
+    derivativeSha256: "c71c253f75e0d16a0287d3201f2b1a284f82a77b8d882d0510ea085bc960b651",
+    derivativeOperations: ["공식 JPEG 원본을 그대로 정적 자산으로 포함; 자르기·크기 변경·포맷 변환 없음."],
+  },
+];
+
+export const caseBank: readonly CaseFile[] = [
+  {
+    id: "handaxe",
+    caseTitle: "사건 1 · 손에 쥔 돌의 역할",
+    question: "이 돌은 어떤 일을 위해 다듬었을까요? 사진에서 보이는 것부터 골라 보세요.",
+    artifact: { title: "주먹도끼", collectionNumber: "신수18710", institution: "국립중앙박물관", period: "구석기", material: "화강암", dimensions: "길이 16.5cm · 너비 12.0cm · 두께 7.4cm", findspot: "연천군 출토", recordUrl: assetManifest[0].recordUrl },
+    assetId: "handaxe-photo",
+    imageAlt: "밝은 배경 위에 놓인 거친 돌 물건. 한쪽 끝은 뾰족하고 반대쪽은 넓고 뭉툭해 보인다.",
+    observations: [
+      { id: "handaxe-shape", text: "한쪽 끝이 뾰족하고 다른 쪽은 상대적으로 뭉툭해 보여요." },
+      { id: "handaxe-surface", text: "양쪽 면에 돌 조각을 떼어 낸 듯한 면이 보여요." },
+      { id: "handaxe-surface-edge", text: "표면 곳곳에 밝고 어두운 면이 이어져 있고, 가장자리가 고르지 않게 보여요." },
+    ],
+    clues: [
+      { id: "handaxe-photo-clue", stage: 1, status: "observed", title: "사진 단서", text: "돌의 뾰족한 끝과 뭉툭한 부분, 여러 면을 사진에서 살필 수 있어요.", sourceUrl: assetManifest[0].recordUrl },
+      { id: "handaxe-catalog", stage: 2, status: "documented", title: "목록 단서", text: "박물관은 이 유물을 구석기의 화강암 물건으로, 길이 16.5cm이며 연천군에서 출토되었다고 기록해요.", sourceUrl: assetManifest[0].recordUrl },
+      { id: "handaxe-context", stage: 3, status: "inferred", title: "비교 설명", text: "국립중앙박물관 설명은 뭉툭한 부분을 손에 쥐고 여러 용도로 사용한 도구일 가능성을 제시해요.", sourceUrl: assetManifest[0].recordUrl },
+      { id: "handaxe-unknown", stage: 3, status: "unknown", title: "남은 빈칸", text: "이 물건이 실제로 어떤 한 번의 작업에 쓰였는지는 지금 자료만으로 알 수 없어요.", sourceUrl: assetManifest[0].recordUrl },
+    ],
+    hypotheses: [
+      { id: "tool", text: "손에 쥐고 자르거나 다듬는 여러 작업에 쓴 도구였을 것이다.", supportByStage: { 1: "plausible-limited", 2: "plausible-limited", 3: "best-supported" }, scopeLimit: "정확히 한 가지 용도였다고 단정할 수는 없어요." },
+      { id: "throw", text: "던져서 멀리 있는 대상을 맞히는 물건이었을 것이다.", supportByStage: { 1: "plausible-limited", 2: "plausible-limited", 3: "conflicts-with-clue" }, scopeLimit: "사진만으로 사용 방법을 확정할 수 없어요." },
+      { id: "ornament", text: "사용보다 장식을 위해 만든 물건이었을 것이다.", supportByStage: { 1: "plausible-limited", 2: "plausible-limited", 3: "conflicts-with-clue" }, scopeLimit: "사진만으로 만든 이유를 확정할 수 없어요." },
+      { id: "defer", text: "사진만으로는 아직 판단하기 어렵다.", supportByStage: { 1: "responsible-defer", 2: "responsible-defer", 3: "responsible-defer" }, scopeLimit: "판단 보류도 근거를 더 살피는 방법이에요." },
+    ],
+    unknownText: "정확한 사용자, 사용한 날, 한 번의 정확한 작업은 알 수 없어요.",
+    curriculumCode: "[6사04-01]의 선사 시대 부분",
+  },
+  {
+    id: "figurine-lid",
+    caseTitle: "사건 2 · 뱀과 개구리가 있는 뚜껑",
+    question: "뚜껑 위의 표현을 보고, 무엇을 알 수 있고 무엇을 모르는지 구분해 보세요.",
+    artifact: { title: "토우장식 뚜껑", collectionNumber: "경주5772", institution: "국립경주박물관", period: "신라 4~6세기", material: "토기", dimensions: "박물관 소장품 목록 확인", findspot: "경주 월성로 무덤군 돌덧널무덤", recordUrl: assetManifest[1].recordUrl },
+    assetId: "figurine-lid-photo",
+    imageAlt: "둥근 흙빛 뚜껑 위에 개구리를 문 뱀 모양 장식이 붙어 있고, 작은 눈과 발가락 표현이 보인다.",
+    observations: [
+      { id: "lid-snake", text: "뚜껑 위에 긴 몸의 뱀 모양이 붙어 보여요." },
+      { id: "lid-frog", text: "뱀이 입에 문 작은 개구리 모양이 보여요." },
+      { id: "lid-detail", text: "발가락·눈·등의 선처럼 작은 부분까지 표현되어 보여요." },
+    ],
+    clues: [
+      { id: "lid-photo-clue", stage: 1, status: "observed", title: "사진 단서", text: "개구리를 문 뱀 모양과 동물의 작은 표현을 사진에서 확인할 수 있어요.", sourceUrl: assetManifest[1].recordUrl },
+      { id: "lid-catalog", stage: 2, status: "documented", title: "목록 단서", text: "박물관은 이 뚜껑을 신라 4~6세기 경주 월성로 무덤군에서 나온 것으로 기록해요.", sourceUrl: assetManifest[1].recordUrl },
+      { id: "lid-context", stage: 3, status: "inferred", title: "맥락과 해석", text: "개구리의 변태와 뱀의 탈피를 떠올리며, 박물관은 당시 사람이 재생을 느꼈을 가능성을 설명해요.", sourceUrl: assetManifest[1].recordUrl },
+      { id: "lid-unknown", stage: 3, status: "unknown", title: "남은 빈칸", text: "장식을 만든 사람이 정확히 어떤 생각을 했는지는 직접 기록이 없어 확정할 수 없어요.", sourceUrl: assetManifest[1].recordUrl },
+    ],
+    hypotheses: [
+      { id: "nature", text: "주변 동물을 관찰해 그릇을 장식했을 가능성이 있어요.", supportByStage: { 1: "best-supported", 2: "best-supported", 3: "best-supported" }, scopeLimit: "한 유물만으로 신라 사람 모두의 생각을 말할 수는 없어요." },
+      { id: "renewal", text: "무덤에 넣으며 다시 살아남·이어짐을 바라는 뜻을 담았을 것이다.", supportByStage: { 1: "plausible-limited", 2: "plausible-limited", 3: "best-supported" }, scopeLimit: "이는 박물관이 제시한 가능성이며 제작자의 직접 말은 아니에요." },
+      { id: "cooking", text: "음식을 조리하는 방법을 알려 주는 표시였을 것이다.", supportByStage: { 1: "plausible-limited", 2: "plausible-limited", 3: "conflicts-with-clue" }, scopeLimit: "자료에 조리법을 알려 주는 기록은 없어요." },
+      { id: "defer", text: "사진만으로는 아직 판단하기 어렵다.", supportByStage: { 1: "responsible-defer", 2: "responsible-defer", 3: "responsible-defer" }, scopeLimit: "판단 보류도 근거를 더 살피는 방법이에요." },
+    ],
+    unknownText: "제작자의 정확한 마음이나 이 유물 하나가 신라 전체를 뜻하는지는 알 수 없어요.",
+    curriculumCode: "[6사04-02]",
+  },
+  {
+    id: "celadon-die",
+    caseTitle: "사건 3 · 작은 정육면체",
+    question: "작은 정육면체의 점과 기록을 함께 살펴, 말할 수 있는 범위를 정해 보세요.",
+    artifact: { title: "청자 상감 주사위", collectionNumber: "덕수6421", institution: "국립중앙박물관", period: "고려", material: "청자", dimensions: "가로·세로·높이 약 1.2cm", findspot: "출토지 불명", recordUrl: assetManifest[2].recordUrl },
+    assetId: "celadon-die-photo",
+    imageAlt: "밝은 배경 위에 놓인 작은 푸른빛 정육면체. 보이는 여러 면에 점 모양 표시가 있다.",
+    observations: [
+      { id: "die-cube", text: "작은 정육면체 모양으로 보여요." },
+      { id: "die-dots", text: "여러 면에 점 모양 표시가 보여요." },
+      { id: "die-glaze", text: "표면이 푸른빛을 띠고 매끈해 보여요." },
+    ],
+    clues: [
+      { id: "die-photo-clue", stage: 1, status: "observed", title: "사진 단서", text: "작은 정육면체와 여러 면의 점 표시를 사진에서 볼 수 있어요.", sourceUrl: assetManifest[2].recordUrl },
+      { id: "die-catalog", stage: 2, status: "documented", title: "목록 단서", text: "박물관은 고려의 상감청자, 약 1.2cm 크기이며 놀이·여가의 주사위로 분류해요.", sourceUrl: assetManifest[2].recordUrl },
+      { id: "die-context", stage: 3, status: "inferred", title: "비교 자료", text: "14세기 후반 교역선에서도 주사위가 인양되었다는 비교는 수를 우연히 정하는 놀이 도구 가능성을 살피게 해요.", sourceUrl: assetManifest[2].recordUrl },
+      { id: "die-unknown", stage: 3, status: "unknown", title: "남은 빈칸", text: "이 소장품 자체의 출토지와 정확한 놀이 규칙, 사용자는 알 수 없어요.", sourceUrl: assetManifest[2].recordUrl },
+    ],
+    hypotheses: [
+      { id: "play", text: "수를 우연히 정하는 놀이 도구였을 것이다.", supportByStage: { 1: "plausible-limited", 2: "best-supported", 3: "best-supported" }, scopeLimit: "어떤 놀이였는지나 사용자를 정할 수는 없어요." },
+      { id: "sample", text: "청자 무늬를 연습하려고 만든 견본이었을 것이다.", supportByStage: { 1: "plausible-limited", 2: "plausible-limited", 3: "plausible-limited" }, scopeLimit: "현재 기록은 이 설명을 충분히 뒷받침하지 않아요." },
+      { id: "measure", text: "물건의 양을 재는 작은 도구였을 것이다.", supportByStage: { 1: "plausible-limited", 2: "conflicts-with-clue", 3: "conflicts-with-clue" }, scopeLimit: "목록 분류와 맞지 않는 부분이 있어요." },
+      { id: "defer", text: "사진만으로는 아직 판단하기 어렵다.", supportByStage: { 1: "responsible-defer", 2: "responsible-defer", 3: "responsible-defer" }, scopeLimit: "판단 보류도 근거를 더 살피는 방법이에요." },
+    ],
+    unknownText: "출토지, 정확한 놀이 규칙, 사용자는 현재 자료로 알 수 없어요.",
+    curriculumCode: "[6사04-03]",
+  },
+];
+
+export const findAsset = (id: string) => assetManifest.find((asset) => asset.id === id);
+export const findHypothesis = (caseFile: CaseFile, id: string) =>
+  caseFile.hypotheses.find((hypothesis) => hypothesis.id === id);

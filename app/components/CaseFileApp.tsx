@@ -1,0 +1,147 @@
+"use client";
+
+import { useState } from "react";
+import { assetManifest, caseBank } from "../content/caseBank";
+import type { HypothesisVersion } from "../content/types";
+import { deriveSessionSummary } from "../lib/domain";
+import { AppDialog } from "./AppDialog";
+import { CasePanel } from "./CasePanel";
+import { EvidenceLabel } from "./EvidenceLabel";
+import { EvidenceSummary } from "./HypothesisHistory";
+
+type Phase = "start" | "primer" | "case-intro" | "case" | "compare" | "result";
+
+export function CaseFileApp() {
+  const [phase, setPhase] = useState<Phase>("start");
+  const [caseIndex, setCaseIndex] = useState(0);
+  const [records, setRecords] = useState<HypothesisVersion[][]>([]);
+  const [sourceOpen, setSourceOpen] = useState(false);
+  const [updateOpen, setUpdateOpen] = useState(false);
+  const [photoAnswer, setPhotoAnswer] = useState("");
+  const [contextAnswer, setContextAnswer] = useState("");
+  const activeCase = caseBank[caseIndex];
+
+  function completeCase(versions: HypothesisVersion[]) {
+    setRecords((current) => [...current, versions]);
+    if (caseIndex === caseBank.length - 1) setPhase("compare");
+    else {
+      setCaseIndex((current) => current + 1);
+      setPhase("case-intro");
+    }
+  }
+
+  function reset() {
+    setCaseIndex(0);
+    setRecords([]);
+    setPhotoAnswer("");
+    setContextAnswer("");
+    setPhase("start");
+  }
+
+  return (
+    <main className="app-shell" data-app-root>
+      <header className="app-header">
+        <button className="wordmark" onClick={reset} type="button">오래된 물건 사건파일</button>
+        <nav aria-label="도움말">
+          <button className="text-button" onClick={() => setSourceOpen(true)} type="button">자료와 이미지 출처</button>
+          <button className="text-button" onClick={() => setUpdateOpen(true)} type="button">업데이트 내역</button>
+        </nav>
+      </header>
+
+      {phase === "start" && <section className="welcome-panel" aria-labelledby="welcome-title">
+        <p className="archive-mark">기록 보관함 · 실제 박물관 자료</p>
+        <h1 id="welcome-title">사진과 새 단서로<br />생각을 고쳐 보는 시간</h1>
+        <p>유물 이름을 맞히는 퀴즈가 아니에요. 사진에서 보이는 것, 박물관 기록, 추론, 아직 모르는 점을 나누어 살피며 가설을 기록합니다.</p>
+        <ul className="welcome-rules">
+          <li>결과를 숫자로 매기지 않아요.</li>
+          <li>처음 가설을 바꾸어도 실패가 아니에요.</li>
+          <li>이름이나 개인정보를 적지 않아요.</li>
+        </ul>
+        <button className="button" onClick={() => setPhase("primer")} type="button">탐구 방법 먼저 보기</button>
+      </section>}
+
+      {phase === "primer" && <section className="primer-panel" aria-labelledby="primer-title">
+        <p className="section-kicker">네 가지 정보 상태</p>
+        <h1 id="primer-title">같은 문장처럼 보여도<br />근거의 종류는 달라요</h1>
+        <div className="primer-grid">
+          <article><EvidenceLabel status="observed" /><p>사진에서 직접 확인한 모양과 흔적이에요.</p></article>
+          <article><EvidenceLabel status="documented" /><p>소장품 목록에 적힌 시대·재질·크기 같은 정보예요.</p></article>
+          <article><EvidenceLabel status="inferred" /><p>여러 근거를 연결해 조심스럽게 설명한 말이에요.</p></article>
+          <article><EvidenceLabel status="unknown" /><p>현재 자료만으로는 단정할 수 없는 빈칸이에요.</p></article>
+        </div>
+        <p className="gentle-note">정보를 단계적으로 여는 이유는, 어떤 단서가 생각을 바꾸었는지 살피기 위해서예요.</p>
+        <button className="button" onClick={() => setPhase("case-intro")} type="button">첫 사건 열기</button>
+      </section>}
+
+      {phase === "case-intro" && <section className="case-intro" aria-labelledby="intro-title">
+        <p className="case-count">사건 {caseIndex + 1} / {caseBank.length}</p>
+        <h1 id="intro-title">{activeCase.caseTitle}</h1>
+        <p>{activeCase.question}</p>
+        <dl>
+          <div><dt>자료 기관</dt><dd>{activeCase.artifact.institution}</dd></div>
+          <div><dt>수업 연결</dt><dd>{activeCase.curriculumCode}</dd></div>
+        </dl>
+        <button className="button" onClick={() => setPhase("case")} type="button">사진 관찰 시작하기</button>
+      </section>}
+
+      {phase === "case" && <CasePanel caseFile={activeCase} key={activeCase.id} onComplete={completeCase} />}
+
+      {phase === "compare" && <section className="compare-panel" aria-labelledby="compare-title">
+        <p className="section-kicker">세 사건을 함께 보기</p>
+        <h1 id="compare-title">생각을 바꾼 단서는 무엇이었나요?</h1>
+        <fieldset>
+          <legend>사진만으로 판단하기 가장 어려웠던 사건 하나를 고르세요.</legend>
+          {caseBank.map((caseFile) => <label key={caseFile.id}><input checked={photoAnswer === caseFile.id} name="photo-compare" onChange={() => setPhotoAnswer(caseFile.id)} type="radio" value={caseFile.id} /> {caseFile.caseTitle}</label>)}
+        </fieldset>
+        <fieldset>
+          <legend>생각을 다시 살피게 한 단서 종류 하나를 고르세요.</legend>
+          <label><input checked={contextAnswer === "catalog"} name="context-compare" onChange={() => setContextAnswer("catalog")} type="radio" value="catalog" /> 박물관 목록의 재질·크기·출토 기록</label>
+          <label><input checked={contextAnswer === "context"} name="context-compare" onChange={() => setContextAnswer("context")} type="radio" value="context" /> 출토 맥락이나 비교 자료</label>
+          <label><input checked={contextAnswer === "unknown"} name="context-compare" onChange={() => setContextAnswer("unknown")} type="radio" value="unknown" /> 아직 알 수 없다는 정보</label>
+        </fieldset>
+        <button className="button" disabled={!photoAnswer || !contextAnswer} onClick={() => setPhase("result")} type="button">가설 변화 기록표 보기</button>
+      </section>}
+
+      {phase === "result" && <SessionResult contextAnswer={contextAnswer} photoAnswer={photoAnswer} records={records} onReset={reset} />}
+
+      <footer className="app-footer">정적 자료만 사용하며, 새로고침하면 이 활동 기록은 처음으로 돌아갑니다.</footer>
+
+      <AppDialog isOpen={sourceOpen} onClose={() => setSourceOpen(false)} title="자료와 이미지 출처">
+        <p>모든 사진은 공식 기관에서 직접 내려받아 앱에 포함했습니다. 공공누리 제1유형의 출처 표시 조건을 따릅니다.</p>
+        <ul className="source-list">
+          {assetManifest.map((asset) => <li key={asset.id}>
+            <strong>{asset.artifactTitle} · {asset.collectionNumber}</strong><br />
+            {asset.requiredCredit}<br />
+            <a href={asset.recordUrl} rel="noreferrer" target="_blank">공식 소장품 기록</a> · <a href={asset.licenseUrl} rel="noreferrer" target="_blank">공공누리 제1유형</a>
+          </li>)}
+        </ul>
+      </AppDialog>
+      <AppDialog isOpen={updateOpen} onClose={() => setUpdateOpen(false)} title="업데이트 내역">
+        <p>2026-07-17 / 1.0.0 / 최초 구현</p>
+      </AppDialog>
+    </main>
+  );
+}
+
+export function SessionResult({ contextAnswer, photoAnswer, records, onReset }: { contextAnswer: string; photoAnswer: string; records: HypothesisVersion[][]; onReset: () => void }) {
+  const summary = deriveSessionSummary(records);
+  const chosenCase = caseBank.find((caseFile) => caseFile.id === photoAnswer)?.caseTitle;
+  const contextLabel = { catalog: "박물관 목록의 재질·크기·출토 기록", context: "출토 맥락이나 비교 자료", unknown: "아직 알 수 없다는 정보" }[contextAnswer];
+  return (
+    <section className="result-panel" aria-labelledby="result-title">
+      <p className="section-kicker">활동 기록</p>
+      <h1 id="result-title">가설 변화 기록표</h1>
+      <p>생각을 유지한 것도, 새 단서로 고친 것도, 판단을 보류한 것도 모두 근거를 살핀 탐구 기록이에요.</p>
+      <div className="record-table" role="region" aria-label="세 사건의 가설 기록">
+        {records.map((versions, index) => <article key={caseBank[index].id}>
+          <h2>{caseBank[index].caseTitle}</h2>
+          <ol>{versions.map((version) => <li key={version.version}><strong>가설 {version.version}</strong> {version.statement}<EvidenceSummary caseFile={caseBank[index]} version={version} /></li>)}</ol>
+          <p><strong>아직 모르는 점:</strong> {caseBank[index].unknownText}</p>
+        </article>)}
+      </div>
+      <p className="final-reading"><strong>비교 기록:</strong> 사진만으로 판단하기 어려웠던 사건은 {chosenCase}, 생각을 다시 살피게 한 단서는 {contextLabel}이었어요.</p>
+      <p className="gentle-note">완료한 사건 {summary.completedCases}개 · 숫자 평가 없음 · 바뀐 가설 {summary.changedCases}개</p>
+      <button className="button" onClick={onReset} type="button">처음부터 다시 살펴보기</button>
+    </section>
+  );
+}
