@@ -6,6 +6,7 @@ import { findAsset, findHypothesis } from "../content/caseBank";
 import type { CaseFile, HypothesisVersion, RevisionAction } from "../content/types";
 import { createVersion, getRevealedClues, saveRevision as buildRevision } from "../lib/domain";
 import { EvidenceLabel } from "./EvidenceLabel";
+import { CaseProgress } from "./ActivityProgress";
 import { HypothesisHistory } from "./HypothesisHistory";
 import { RevisionForm } from "./RevisionForm";
 
@@ -77,6 +78,7 @@ export function CasePanel({ caseFile, onComplete }: { caseFile: CaseFile; onComp
   const limitedHypothesis = caseFile.hypotheses.find((item) => item.supportByStage[3] === "plausible-limited");
   return (
     <section aria-labelledby="case-title" className="case-panel">
+      <CaseProgress step={step} />
       <div className="case-banner"><span>실제 박물관 소장품 사진</span><span>{caseFile.artifact.institution}</span></div>
       <h1 id="case-title">{caseFile.caseTitle}</h1>
       <p className="case-question">{caseFile.question}</p>
@@ -111,7 +113,8 @@ export function CasePanel({ caseFile, onComplete }: { caseFile: CaseFile; onComp
           </div>
         </fieldset>
         <p className="gentle-note">처음 생각을 바꾸어도 감점이나 실패가 없어요.</p>
-        <button className="button" type="submit">가설 1 기록하기</button>
+        {!initialHypothesis && <p className="selection-guide">가설 하나를 고르면 기록할 수 있어요.</p>}
+        <button className="button" disabled={!initialHypothesis} type="submit">가설 1 기록하기</button>
       </form>}
 
       {step === "catalog" && <div className="case-step">

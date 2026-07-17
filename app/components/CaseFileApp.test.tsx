@@ -30,7 +30,44 @@ describe("학생용 화면", () => {
     expect(document.activeElement).toBe(sourceButton);
 
     fireEvent.click(screen.getByRole("button", { name: "업데이트 내역" }));
+    expect(screen.getByText("2026-07-17 / 1.1.0 / 진행 안내와 선택 도움을 개선")).toBeTruthy();
     expect(screen.getByText("2026-07-17 / 1.0.0 / 최초 구현")).toBeTruthy();
+  });
+
+  it("선택 전 기록을 막고, 진행 중 제목을 눌러도 확인 전에는 활동을 지우지 않는다", () => {
+    render(<CaseFileApp />);
+    fireEvent.click(screen.getByRole("button", { name: "탐구 방법 먼저 보기" }));
+    fireEvent.click(screen.getByRole("button", { name: "첫 사건 열기" }));
+    fireEvent.click(screen.getByRole("button", { name: "사진 관찰 시작하기" }));
+    const observations = screen.getAllByRole("checkbox");
+    fireEvent.click(observations[0]);
+    fireEvent.click(observations[1]);
+    fireEvent.click(screen.getByRole("button", { name: "관찰 기록을 바탕으로 가설 세우기" }));
+
+    const initialSave = screen.getByRole("button", { name: "가설 1 기록하기" });
+    expect(initialSave.hasAttribute("disabled")).toBe(true);
+    expect(screen.getByText("가설 하나를 고르면 기록할 수 있어요.")).toBeTruthy();
+    expect(screen.getByRole("navigation", { name: "전체 활동 진행" })).toBeTruthy();
+    expect(screen.getByRole("navigation", { name: "현재 사건 진행" })).toBeTruthy();
+    expect(screen.getByText("현재 단계 2/7 · 가설 1")).toBeTruthy();
+
+    fireEvent.click(screen.getByRole("button", { name: "오래된 물건 사건파일" }));
+    expect(screen.getByRole("dialog", { name: "활동 기록을 지울까요?" })).toBeTruthy();
+    expect(screen.getByRole("heading", { hidden: true, name: "가설 1 · 지금의 생각" })).toBeTruthy();
+    fireEvent.click(screen.getByRole("button", { name: "계속 탐구하기" }));
+    expect(screen.queryByRole("dialog", { name: "활동 기록을 지울까요?" })).toBeNull();
+
+    fireEvent.click(screen.getByLabelText(/던져서 멀리 있는 대상을/));
+    expect(initialSave.hasAttribute("disabled")).toBe(false);
+    fireEvent.click(initialSave);
+    fireEvent.click(screen.getByRole("button", { name: "새 단서로 가설 다시 살피기" }));
+    const revisionSave = screen.getByRole("button", { name: "가설 2 기록하기" });
+    expect(revisionSave.hasAttribute("disabled")).toBe(true);
+    expect(screen.getByText("공개 단서를 하나 이상 고르면 기록할 수 있어요.")).toBeTruthy();
+
+    fireEvent.click(screen.getByRole("button", { name: "오래된 물건 사건파일" }));
+    fireEvent.click(screen.getByRole("button", { name: "기록을 지우고 처음으로" }));
+    expect(screen.getByRole("heading", { name: /사진과 새 단서로\s*생각을 고쳐 보는 시간/ })).toBeTruthy();
   });
 
   it("네 정보 상태를 말로 보여 주고, 가설 기록을 지우지 않는다", () => {

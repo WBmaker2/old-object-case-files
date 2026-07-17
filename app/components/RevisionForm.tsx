@@ -77,8 +77,9 @@ export function RevisionForm({ caseFile, previous, stage, heading, headingRef, o
           ))}
         </div>
       </fieldset>
+      {evidenceIds.length === 0 && <p className="selection-guide">공개 단서를 하나 이상 고르면 기록할 수 있어요.</p>}
       <p aria-live="polite" className="form-message">{message}</p>
-      <button className="button" type="submit">가설 {stage} 기록하기</button>
+      <button className="button" disabled={evidenceIds.length === 0} type="submit">가설 {stage} 기록하기</button>
     </form>
   );
 }

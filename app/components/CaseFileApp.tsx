@@ -5,6 +5,7 @@ import { assetManifest, caseBank } from "../content/caseBank";
 import type { HypothesisVersion } from "../content/types";
 import { deriveSessionSummary } from "../lib/domain";
 import { AppDialog } from "./AppDialog";
+import { ActivityProgress } from "./ActivityProgress";
 import { CasePanel } from "./CasePanel";
 import { EvidenceLabel } from "./EvidenceLabel";
 import { EvidenceSummary } from "./HypothesisHistory";
@@ -17,6 +18,7 @@ export function CaseFileApp() {
   const [records, setRecords] = useState<HypothesisVersion[][]>([]);
   const [sourceOpen, setSourceOpen] = useState(false);
   const [updateOpen, setUpdateOpen] = useState(false);
+  const [resetOpen, setResetOpen] = useState(false);
   const [photoAnswer, setPhotoAnswer] = useState("");
   const [contextAnswer, setContextAnswer] = useState("");
   const activeCase = caseBank[caseIndex];
@@ -38,15 +40,29 @@ export function CaseFileApp() {
     setPhase("start");
   }
 
+  function handleWordmarkClick() {
+    if (phase === "start") {
+      reset();
+      return;
+    }
+    setResetOpen(true);
+  }
+
+  function confirmReset() {
+    reset();
+    setResetOpen(false);
+  }
+
   return (
     <main className="app-shell" data-app-root>
       <header className="app-header">
-        <button className="wordmark" onClick={reset} type="button">오래된 물건 사건파일</button>
+        <button className="wordmark" onClick={handleWordmarkClick} type="button">오래된 물건 사건파일</button>
         <nav aria-label="도움말">
           <button className="text-button" onClick={() => setSourceOpen(true)} type="button">자료와 이미지 출처</button>
           <button className="text-button" onClick={() => setUpdateOpen(true)} type="button">업데이트 내역</button>
         </nav>
       </header>
+      <ActivityProgress caseIndex={caseIndex} phase={phase} />
 
       {phase === "start" && <section className="welcome-panel" aria-labelledby="welcome-title">
         <p className="archive-mark">기록 보관함 · 실제 박물관 자료</p>
@@ -117,7 +133,17 @@ export function CaseFileApp() {
         </ul>
       </AppDialog>
       <AppDialog isOpen={updateOpen} onClose={() => setUpdateOpen(false)} title="업데이트 내역">
-        <p>2026-07-17 / 1.0.0 / 최초 구현</p>
+        <ul className="update-list">
+          <li><strong>2026-07-17 / 1.1.0 / 진행 안내와 선택 도움을 개선</strong><br />전체·사건 진행 표시, 선택 전 기록 안내, 실수 방지 초기화 확인, 모바일 조작 영역을 보완했습니다.</li>
+          <li>2026-07-17 / 1.0.0 / 최초 구현</li>
+        </ul>
+      </AppDialog>
+      <AppDialog isOpen={resetOpen} onClose={() => setResetOpen(false)} title="활동 기록을 지울까요?">
+        <p>지금까지 고른 관찰, 가설, 비교 기록이 모두 처음으로 돌아갑니다. 계속 탐구하려면 취소해도 괜찮아요.</p>
+        <div className="dialog-actions">
+          <button className="button button-secondary" onClick={() => setResetOpen(false)} type="button">계속 탐구하기</button>
+          <button className="button" onClick={confirmReset} type="button">기록을 지우고 처음으로</button>
+        </div>
       </AppDialog>
     </main>
   );
