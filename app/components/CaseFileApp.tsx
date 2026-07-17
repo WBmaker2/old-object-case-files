@@ -7,10 +7,17 @@ import { deriveSessionSummary } from "../lib/domain";
 import { AppDialog } from "./AppDialog";
 import { ActivityProgress } from "./ActivityProgress";
 import { CasePanel } from "./CasePanel";
+import { CollapsibleSection } from "./CollapsibleSection";
 import { EvidenceLabel } from "./EvidenceLabel";
 import { EvidenceSummary } from "./HypothesisHistory";
 
 type Phase = "start" | "primer" | "case-intro" | "case" | "compare" | "result";
+
+const studentFocus = [
+  "사진에서 보이는 것과 알 수 없는 것을 나누어 보기",
+  "그림에서 바로 보이는 것과 자료로 알게 되는 것을 나누어 보기",
+  "사진과 자료를 함께 보고 말할 수 있는 범위 정하기",
+];
 
 export function CaseFileApp() {
   const [phase, setPhase] = useState<Phase>("start");
@@ -67,25 +74,26 @@ export function CaseFileApp() {
       {phase === "start" && <section className="welcome-panel" aria-labelledby="welcome-title">
         <p className="archive-mark">기록 보관함 · 실제 박물관 자료</p>
         <h1 id="welcome-title">사진과 새 단서로<br />생각을 고쳐 보는 시간</h1>
-        <p>유물 이름을 맞히는 퀴즈가 아니에요. 사진에서 보이는 것, 박물관 기록, 추론, 아직 모르는 점을 나누어 살피며 가설을 기록합니다.</p>
+        <p>유물 이름을 맞히는 퀴즈가 아니에요. 사진에서 보이는 것, 박물관이 적어 둔 내용, 아직 모르는 것을 나누어 살펴봐요. 가설은 단서를 보고 세운 지금의 생각이에요.</p>
+        <p className="time-note">약 10~15분 · 사건 3개</p>
         <ul className="welcome-rules">
           <li>결과를 숫자로 매기지 않아요.</li>
-          <li>처음 가설을 바꾸어도 실패가 아니에요.</li>
+          <li>처음 생각을 바꾸어도 실패가 아니에요.</li>
           <li>이름이나 개인정보를 적지 않아요.</li>
         </ul>
         <button className="button" onClick={() => setPhase("primer")} type="button">탐구 방법 먼저 보기</button>
       </section>}
 
       {phase === "primer" && <section className="primer-panel" aria-labelledby="primer-title">
-        <p className="section-kicker">네 가지 정보 상태</p>
-        <h1 id="primer-title">같은 문장처럼 보여도<br />근거의 종류는 달라요</h1>
+        <p className="section-kicker">정보를 나누어 보기</p>
+        <h1 id="primer-title">사진, 박물관 기록, 생각,<br />아직 모르는 것을 나누어 봐요</h1>
         <div className="primer-grid">
           <article><EvidenceLabel status="observed" /><p>사진에서 직접 확인한 모양과 흔적이에요.</p></article>
-          <article><EvidenceLabel status="documented" /><p>소장품 목록에 적힌 시대·재질·크기 같은 정보예요.</p></article>
-          <article><EvidenceLabel status="inferred" /><p>여러 근거를 연결해 조심스럽게 설명한 말이에요.</p></article>
-          <article><EvidenceLabel status="unknown" /><p>현재 자료만으로는 단정할 수 없는 빈칸이에요.</p></article>
+          <article><EvidenceLabel status="documented" /><p>박물관이 적어 둔 시대·재질·크기 같은 내용이에요.</p></article>
+          <article><EvidenceLabel status="inferred" /><p>여러 자료를 이어서 조심스럽게 생각한 말이에요.</p></article>
+          <article><EvidenceLabel status="unknown" /><p>지금 자료만으로는 아직 정할 수 없는 점이에요.</p></article>
         </div>
-        <p className="gentle-note">정보를 단계적으로 여는 이유는, 어떤 단서가 생각을 바꾸었는지 살피기 위해서예요.</p>
+        <p className="gentle-note">자료를 차례로 보는 이유는, 무엇이 내 생각을 바꾸었는지 살피기 위해서예요.</p>
         <button className="button" onClick={() => setPhase("case-intro")} type="button">첫 사건 열기</button>
       </section>}
 
@@ -95,27 +103,29 @@ export function CaseFileApp() {
         <p>{activeCase.question}</p>
         <dl>
           <div><dt>자료 기관</dt><dd>{activeCase.artifact.institution}</dd></div>
-          <div><dt>수업 연결</dt><dd>{activeCase.curriculumCode}</dd></div>
+          <div><dt>이번에 해 볼 일</dt><dd>{studentFocus[caseIndex]}</dd></div>
         </dl>
+        <details className="teacher-note"><summary>선생님 참고</summary><p>교육과정 코드: {activeCase.curriculumCode}</p></details>
         <button className="button" onClick={() => setPhase("case")} type="button">사진 관찰 시작하기</button>
       </section>}
 
       {phase === "case" && <CasePanel caseFile={activeCase} key={activeCase.id} onComplete={completeCase} />}
 
       {phase === "compare" && <section className="compare-panel" aria-labelledby="compare-title">
-        <p className="section-kicker">세 사건을 함께 보기</p>
+        <p className="section-kicker">세 사건을 돌아보기</p>
         <h1 id="compare-title">생각을 바꾼 단서는 무엇이었나요?</h1>
+        <p className="case-action">세 사건을 떠올리며, 어떤 자료가 내 생각을 바꾸었는지 골라 보세요.</p>
         <fieldset>
-          <legend>사진만으로 판단하기 가장 어려웠던 사건 하나를 고르세요.</legend>
+          <legend>사진만 보고 생각하기 가장 어려웠던 사건 하나를 고르세요.</legend>
           {caseBank.map((caseFile) => <label key={caseFile.id}><input checked={photoAnswer === caseFile.id} name="photo-compare" onChange={() => setPhotoAnswer(caseFile.id)} type="radio" value={caseFile.id} /> {caseFile.caseTitle}</label>)}
         </fieldset>
         <fieldset>
-          <legend>생각을 다시 살피게 한 단서 종류 하나를 고르세요.</legend>
-          <label><input checked={contextAnswer === "catalog"} name="context-compare" onChange={() => setContextAnswer("catalog")} type="radio" value="catalog" /> 박물관 목록의 재질·크기·출토 기록</label>
-          <label><input checked={contextAnswer === "context"} name="context-compare" onChange={() => setContextAnswer("context")} type="radio" value="context" /> 출토 맥락이나 비교 자료</label>
+          <legend>생각을 다시 살피게 한 자료 하나를 고르세요.</legend>
+          <label><input checked={contextAnswer === "catalog"} name="context-compare" onChange={() => setContextAnswer("catalog")} type="radio" value="catalog" /> 박물관에 적힌 재질·크기·발견 장소</label>
+          <label><input checked={contextAnswer === "context"} name="context-compare" onChange={() => setContextAnswer("context")} type="radio" value="context" /> 함께 찾은 물건이나 다른 곳의 비슷한 자료</label>
           <label><input checked={contextAnswer === "unknown"} name="context-compare" onChange={() => setContextAnswer("unknown")} type="radio" value="unknown" /> 아직 알 수 없다는 정보</label>
         </fieldset>
-        <button className="button" disabled={!photoAnswer || !contextAnswer} onClick={() => setPhase("result")} type="button">가설 변화 기록표 보기</button>
+        <button className="button" disabled={!photoAnswer || !contextAnswer} onClick={() => setPhase("result")} type="button">내 생각 변화 보기</button>
       </section>}
 
       {phase === "result" && <SessionResult contextAnswer={contextAnswer} photoAnswer={photoAnswer} records={records} onReset={reset} />}
@@ -134,6 +144,7 @@ export function CaseFileApp() {
       </AppDialog>
       <AppDialog isOpen={updateOpen} onClose={() => setUpdateOpen(false)} title="업데이트 내역">
         <ul className="update-list">
+          <li><strong>2026-07-18 / 1.2.0 / 학생말과 기록 보기 방식을 개선</strong><br />어려운 말을 쉽게 풀고, 현재 할 일을 더 또렷하게 보여 주며, 긴 기록은 접어 볼 수 있게 했습니다.</li>
           <li><strong>2026-07-17 / 1.1.0 / 진행 안내와 선택 도움을 개선</strong><br />전체·사건 진행 표시, 선택 전 기록 안내, 실수 방지 초기화 확인, 모바일 조작 영역을 보완했습니다.</li>
           <li>2026-07-17 / 1.0.0 / 최초 구현</li>
         </ul>
@@ -152,21 +163,23 @@ export function CaseFileApp() {
 export function SessionResult({ contextAnswer, photoAnswer, records, onReset }: { contextAnswer: string; photoAnswer: string; records: HypothesisVersion[][]; onReset: () => void }) {
   const summary = deriveSessionSummary(records);
   const chosenCase = caseBank.find((caseFile) => caseFile.id === photoAnswer)?.caseTitle;
-  const contextLabel = { catalog: "박물관 목록의 재질·크기·출토 기록", context: "출토 맥락이나 비교 자료", unknown: "아직 알 수 없다는 정보" }[contextAnswer];
+  const contextLabel = { catalog: "박물관에 적힌 재질·크기·발견 장소", context: "함께 찾은 물건이나 다른 곳의 비슷한 자료", unknown: "아직 알 수 없다는 정보" }[contextAnswer];
   return (
     <section className="result-panel" aria-labelledby="result-title">
-      <p className="section-kicker">활동 기록</p>
+      <p className="section-kicker">내 생각 변화 기록</p>
       <h1 id="result-title">가설 변화 기록표</h1>
-      <p>생각을 유지한 것도, 새 단서로 고친 것도, 판단을 보류한 것도 모두 근거를 살핀 탐구 기록이에요.</p>
+      <p>생각을 그대로 둔 것도, 새 자료로 고친 것도, 아직 정하지 않은 것도 모두 자료를 살핀 기록이에요.</p>
       <div className="record-table" role="region" aria-label="세 사건의 가설 기록">
         {records.map((versions, index) => <article key={caseBank[index].id}>
-          <h2>{caseBank[index].caseTitle}</h2>
-          <ol>{versions.map((version) => <li key={version.version}><strong>가설 {version.version}</strong> {version.statement}<EvidenceSummary caseFile={caseBank[index]} version={version} /></li>)}</ol>
-          <p><strong>아직 모르는 점:</strong> {caseBank[index].unknownText}</p>
+          <CollapsibleSection className="record-card" label={`${caseBank[index].caseTitle} 기록`}>
+            <h2>{caseBank[index].caseTitle}</h2>
+            <ol>{versions.map((version) => <li key={version.version}><strong>가설 {version.version}</strong> {version.statement}<EvidenceSummary caseFile={caseBank[index]} version={version} /></li>)}</ol>
+            <p><strong>아직 모르는 점:</strong> {caseBank[index].unknownText}</p>
+          </CollapsibleSection>
         </article>)}
       </div>
-      <p className="final-reading"><strong>비교 기록:</strong> 사진만으로 판단하기 어려웠던 사건은 {chosenCase}, 생각을 다시 살피게 한 단서는 {contextLabel}이었어요.</p>
-      <p className="gentle-note">완료한 사건 {summary.completedCases}개 · 숫자 평가 없음 · 바뀐 가설 {summary.changedCases}개</p>
+      <p className="final-reading"><strong>비교 기록:</strong> 사진만 보고 생각하기 어려웠던 사건은 {chosenCase}, 생각을 다시 살피게 한 자료는 {contextLabel}였어요.</p>
+      <p className="gentle-note">완료한 사건 {summary.completedCases}개 · 숫자로 평가하지 않음 · 바뀐 생각 {summary.changedCases}개</p>
       <button className="button" onClick={onReset} type="button">처음부터 다시 살펴보기</button>
     </section>
   );

@@ -24,7 +24,6 @@ body {
   font-family: "Apple SD Gothic Neo", "Pretendard", "Noto Sans KR", system-ui, sans-serif;
   line-height: 1.65;
   margin: 0;
-  min-width: 320px;
 }
 
 button, input { font: inherit; }
@@ -52,6 +51,8 @@ a { color: #174f7d; text-decoration-thickness: 1.5px; }
 .activity-progress li[aria-current="step"] span { background: var(--clay-deep); border-radius: .25rem; color: #fff; display: inline-block; padding: .08rem .35rem; }
 .case-progress { border-bottom: 1px dashed var(--line); margin-bottom: 1.1rem; overflow-x: auto; padding-bottom: .7rem; }
 .case-progress-summary { color: var(--celadon); font-size: .9rem; font-weight: 800; margin-bottom: .55rem; }
+.technical-stage { color: var(--muted); display: inline-block; font-size: .76rem; font-weight: 500; margin-left: .35rem; }
+.case-progress-track { accent-color: var(--celadon); display: block; height: .5rem; margin: 0 0 .7rem; width: 100%; }
 .case-progress li { color: var(--muted); flex: 0 0 auto; font-size: .76rem; padding-right: .65rem; }
 .case-progress li:not(:last-child)::after { color: var(--line); content: "→"; margin-left: .65rem; }
 .case-progress li.is-reached { color: var(--celadon); font-weight: 800; }
@@ -68,6 +69,8 @@ h3 { font-size: 1.05rem; margin-bottom: .45rem; }
 .welcome-panel > p:not(.archive-mark), .case-question, .result-panel > p { font-size: clamp(1.02rem, 2.4vw, 1.25rem); max-width: 47rem; }
 .welcome-rules { border-left: 3px solid var(--celadon); list-style: "—  "; margin: 1.75rem 0 2rem; padding-left: 1.8rem; }
 .welcome-rules li { margin: .35rem 0; }
+.time-note { color: var(--celadon); font-size: .95rem !important; font-weight: 800; margin-bottom: 0; }
+.technical-note { color: var(--muted); font-size: .82rem; margin: -.45rem 0 1rem; }
 
 .button { background: var(--clay); border: 2px solid var(--clay); border-radius: .3rem; color: #fff; font-weight: 750; padding: .72rem 1rem; }
 .button:hover { background: var(--clay-deep); border-color: var(--clay-deep); }
@@ -91,12 +94,16 @@ h3 { font-size: 1.05rem; margin-bottom: .45rem; }
 .case-intro dl div { border-top: 1px solid var(--line); padding-top: .55rem; }
 .case-intro dt { color: var(--muted); font-size: .83rem; }
 .case-intro dd { margin: .1rem 0 0; }
+.teacher-note { color: var(--muted); font-size: .82rem; margin: 0 0 1.25rem; }
+.teacher-note summary { cursor: pointer; text-decoration: underline; text-underline-offset: .15rem; }
+.teacher-note p { margin: .45rem 0 0; }
 
 .case-panel { background: var(--white); border: 1px solid var(--line); box-shadow: 8px 8px 0 var(--paper-deep); padding: clamp(1.2rem, 4vw, 2.75rem); }
 .case-banner { align-items: center; border-bottom: 1px dashed var(--line); display: flex; justify-content: space-between; margin-bottom: 1.25rem; padding-bottom: .65rem; }
 .case-banner span:last-child { color: var(--muted); font-weight: 600; letter-spacing: 0; text-transform: none; }
 .case-panel > h1 { font-size: clamp(1.75rem, 4.5vw, 3rem); }
 .status-line, .form-message { color: var(--celadon); font-size: .93rem; min-height: 1.65rem; }
+.case-action { background: #f2f7f3; border-left: 3px solid var(--celadon); font-weight: 700; margin: .7rem 0 1rem; padding: .7rem .8rem; }
 .case-step { margin-top: 1.2rem; }
 .artifact-figure { background: #ede7dc; margin: 0 0 1.2rem; padding: clamp(.55rem, 2vw, 1rem); }
 .artifact-figure img { display: block; height: min(45vh, 460px); margin: auto; max-width: 100%; object-fit: contain; width: 100%; }
@@ -120,6 +127,10 @@ legend { font-weight: 800; max-width: 100%; padding: 0 .35rem; }
 .clue-card p { margin-bottom: .45rem; }
 .clue-card a { font-size: .85rem; }
 .history { border-top: 1px dashed var(--line); margin-top: 2rem; padding-top: 1rem; }
+.disclosure-button { background: transparent; border: 0; color: var(--celadon); cursor: pointer; font-weight: 800; min-height: 44px; padding: .55rem .1rem; text-align: left; width: 100%; }
+.disclosure-button::after { color: var(--clay); content: "⌄"; display: inline-block; margin-left: .35rem; }
+.disclosure-button[aria-expanded="true"] { border-bottom: 1px dashed var(--line); margin-bottom: 1rem; }
+.disclosure-button[aria-expanded="true"]::after { transform: rotate(180deg); }
 .history h3 { font-size: 1rem; }
 .history ol { display: grid; gap: .65rem; list-style: none; margin: 0; padding: 0; }
 .history li { border-left: 3px solid var(--clay); display: grid; gap: .15rem; padding-left: .7rem; }
@@ -140,7 +151,8 @@ legend { font-weight: 800; max-width: 100%; padding: 0 .35rem; }
 .selection-guide { color: var(--clay-deep); font-size: .92rem; font-weight: 700; margin-bottom: .6rem; }
 
 .record-table { display: grid; gap: 1rem; margin: 1.5rem 0; }
-.record-table article { background: var(--white); border-top: 4px solid var(--clay); padding: 1rem; }
+.record-table article { background: var(--white); border-top: 4px solid var(--clay); }
+.record-card { padding: 0 1rem 1rem; }
 .record-table h2 { font-size: 1.25rem; }
 .record-table ol { padding-left: 1.35rem; }
 .record-table li { margin: .4rem 0; }
@@ -163,6 +175,9 @@ legend { font-weight: 800; max-width: 100%; padding: 0 .35rem; }
   .primer-grid, .summary-grid, .choice-grid, .case-intro dl { grid-template-columns: 1fr; }
   .app-shell { padding-inline: 1rem; }
   .case-panel, .case-intro { box-shadow: 4px 4px 0 var(--paper-deep); }
+  .case-progress { overflow: visible; }
+  .case-progress ol { display: none; }
+  .technical-stage { display: block; margin-left: 0; }
 }
 
 @media (max-width: 360px) {
@@ -170,9 +185,6 @@ legend { font-weight: 800; max-width: 100%; padding: 0 .35rem; }
   .app-header nav { gap: .2rem .45rem; }
   .text-button { font-size: .82rem; }
   .case-panel, .case-intro { padding: 1rem; }
-  .case-progress ol { gap: .25rem; }
-  .case-progress li { font-size: .7rem; padding-right: .4rem; }
-  .case-progress li:not(:last-child)::after { margin-left: .4rem; }
   .case-step > .button, .dialog-actions .button { width: 100%; }
 }
 

@@ -1,18 +1,19 @@
 import type { CaseFile, HypothesisVersion } from "../content/types";
+import { CollapsibleSection } from "./CollapsibleSection";
 import { EvidenceLabel } from "./EvidenceLabel";
 
 const actionLabels = {
-  keep: "유지",
-  refine: "다듬기",
+  keep: "그대로 두기",
+  refine: "조금 고치기",
   replace: "바꾸기",
-  defer: "판단 보류",
+  defer: "아직 결정하지 않기",
 };
 
 export function HypothesisHistory({ caseFile, versions }: { caseFile: CaseFile; versions: readonly HypothesisVersion[] }) {
   if (versions.length === 0) return null;
   return (
-    <section aria-label="가설 변화 기록" className="history">
-      <h3>가설 변화 기록</h3>
+    <CollapsibleSection className="history" label="내 생각 기록">
+      <h3>생각이 어떻게 달라졌는지</h3>
       <ol>
         {versions.map((version) => (
           <li key={version.version}>
@@ -23,7 +24,7 @@ export function HypothesisHistory({ caseFile, versions }: { caseFile: CaseFile; 
           </li>
         ))}
       </ol>
-    </section>
+    </CollapsibleSection>
   );
 }
 

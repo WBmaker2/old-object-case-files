@@ -42,14 +42,14 @@ describe("학생용 화면", () => {
     const observations = screen.getAllByRole("checkbox");
     fireEvent.click(observations[0]);
     fireEvent.click(observations[1]);
-    fireEvent.click(screen.getByRole("button", { name: "관찰 기록을 바탕으로 가설 세우기" }));
+    fireEvent.click(screen.getByRole("button", { name: "사진을 보고 첫 생각 고르기" }));
 
-    const initialSave = screen.getByRole("button", { name: "가설 1 기록하기" });
+    const initialSave = screen.getByRole("button", { name: "첫 생각 기록하기" });
     expect(initialSave.hasAttribute("disabled")).toBe(true);
-    expect(screen.getByText("가설 하나를 고르면 기록할 수 있어요.")).toBeTruthy();
+    expect(screen.getByText("생각 하나를 고르면 기록할 수 있어요.")).toBeTruthy();
     expect(screen.getByRole("navigation", { name: "전체 활동 진행" })).toBeTruthy();
     expect(screen.getByRole("navigation", { name: "현재 사건 진행" })).toBeTruthy();
-    expect(screen.getByText("현재 단계 2/7 · 가설 1")).toBeTruthy();
+    expect(screen.getByText("현재 단계 2/7 · 첫 생각")).toBeTruthy();
 
     fireEvent.click(screen.getByRole("button", { name: "오래된 물건 사건파일" }));
     expect(screen.getByRole("dialog", { name: "활동 기록을 지울까요?" })).toBeTruthy();
@@ -60,10 +60,10 @@ describe("학생용 화면", () => {
     fireEvent.click(screen.getByLabelText(/던져서 멀리 있는 대상을/));
     expect(initialSave.hasAttribute("disabled")).toBe(false);
     fireEvent.click(initialSave);
-    fireEvent.click(screen.getByRole("button", { name: "새 단서로 가설 다시 살피기" }));
-    const revisionSave = screen.getByRole("button", { name: "가설 2 기록하기" });
+    fireEvent.click(screen.getByRole("button", { name: "새 자료로 내 생각 고치기" }));
+    const revisionSave = screen.getByRole("button", { name: "생각 2 기록하기" });
     expect(revisionSave.hasAttribute("disabled")).toBe(true);
-    expect(screen.getByText("공개 단서를 하나 이상 고르면 기록할 수 있어요.")).toBeTruthy();
+    expect(screen.getByText("자료를 하나 이상 고르면 기록할 수 있어요.")).toBeTruthy();
 
     fireEvent.click(screen.getByRole("button", { name: "오래된 물건 사건파일" }));
     fireEvent.click(screen.getByRole("button", { name: "기록을 지우고 처음으로" }));
@@ -82,22 +82,22 @@ describe("학생용 화면", () => {
     const observations = screen.getAllByRole("checkbox");
     fireEvent.click(observations[0]);
     fireEvent.click(observations[1]);
-    fireEvent.click(screen.getByRole("button", { name: "관찰 기록을 바탕으로 가설 세우기" }));
+    fireEvent.click(screen.getByRole("button", { name: "사진을 보고 첫 생각 고르기" }));
     fireEvent.click(screen.getByLabelText(/던져서 멀리 있는 대상을/));
-    fireEvent.click(screen.getByRole("button", { name: "가설 1 기록하기" }));
-    fireEvent.click(screen.getByRole("button", { name: "새 단서로 가설 다시 살피기" }));
-    expect(document.activeElement).toBe(screen.getByRole("heading", { name: "가설 2 · 목록 단서 뒤의 생각" }));
+    fireEvent.click(screen.getByRole("button", { name: "첫 생각 기록하기" }));
+    fireEvent.click(screen.getByRole("button", { name: "새 자료로 내 생각 고치기" }));
+    expect(document.activeElement).toBe(screen.getByRole("heading", { name: "박물관 기록을 보고 생각 고치기" }));
     fireEvent.click(screen.getByLabelText(/바꾸기/));
     fireEvent.click(screen.getByLabelText(/손에 쥐고 자르거나/));
-    fireEvent.click(screen.getByLabelText(/목록 단서/));
-    fireEvent.click(screen.getByRole("button", { name: "가설 2 기록하기" }));
+    fireEvent.click(screen.getByLabelText(/박물관 기록/));
+    fireEvent.click(screen.getByRole("button", { name: "생각 2 기록하기" }));
     expect(screen.getByText("던져서 멀리 있는 대상을 맞히는 물건이었을 것이다.")).toBeTruthy();
     expect(screen.getByText("손에 쥐고 자르거나 다듬는 여러 작업에 쓴 도구였을 것이다.")).toBeTruthy();
     expect(screen.getAllByText("고른 근거")).toHaveLength(2);
     expect(screen.getByText("박물관 기록이에요")).toBeTruthy();
     expect(screen.getByText(/박물관은 이 유물을 구석기의 화강암 물건으로/)).toBeTruthy();
-    fireEvent.click(screen.getByRole("button", { name: "마지막 가설 기록하기" }));
-    expect(document.activeElement).toBe(screen.getByRole("heading", { name: "가설 3 · 지금의 가장 조심스러운 설명" }));
+    fireEvent.click(screen.getByRole("button", { name: "마지막 생각 고르기" }));
+    expect(document.activeElement).toBe(screen.getByRole("heading", { name: "마지막 생각을 고르기" }));
   });
 
   it("최종 기록표에도 가설별로 고른 근거의 상태와 설명을 남긴다", () => {
@@ -107,9 +107,10 @@ describe("학생용 화면", () => {
     const third = saveRevision(handaxe, second, 3, "refine", "tool", ["handaxe-context"]);
     render(<SessionResult contextAnswer="context" photoAnswer="handaxe" records={[[first, second, third]]} onReset={() => {}} />);
     const record = within(screen.getByRole("region", { name: "세 사건의 가설 기록" }));
+    fireEvent.click(record.getByRole("button", { name: /손에 쥔 돌의 역할 기록 펼치기/ }));
     expect(record.getAllByText("고른 근거")).toHaveLength(3);
     expect(record.getByText("박물관 기록이에요")).toBeTruthy();
-    expect(record.getByText("목록 단서")).toBeTruthy();
+    expect(record.getByText("박물관 기록")).toBeTruthy();
     expect(record.getByText(/국립중앙박물관 설명은 뭉툭한 부분을/)).toBeTruthy();
     expect(record.getByText(/정확히 한 가지 용도였다고 단정할 수는 없어요/)).toBeTruthy();
   });
@@ -124,15 +125,15 @@ describe("학생용 화면", () => {
       const observations = screen.getAllByRole("checkbox");
       fireEvent.click(observations[0]);
       fireEvent.click(observations[1]);
-      fireEvent.click(screen.getByRole("button", { name: "관찰 기록을 바탕으로 가설 세우기" }));
+      fireEvent.click(screen.getByRole("button", { name: "사진을 보고 첫 생각 고르기" }));
       fireEvent.click(screen.getAllByRole("radio")[0]);
-      fireEvent.click(screen.getByRole("button", { name: "가설 1 기록하기" }));
-      fireEvent.click(screen.getByRole("button", { name: "새 단서로 가설 다시 살피기" }));
+      fireEvent.click(screen.getByRole("button", { name: "첫 생각 기록하기" }));
+      fireEvent.click(screen.getByRole("button", { name: "새 자료로 내 생각 고치기" }));
       fireEvent.click(screen.getAllByRole("checkbox")[1]);
-      fireEvent.click(screen.getByRole("button", { name: "가설 2 기록하기" }));
-      fireEvent.click(screen.getByRole("button", { name: "마지막 가설 기록하기" }));
+      fireEvent.click(screen.getByRole("button", { name: "생각 2 기록하기" }));
+      fireEvent.click(screen.getByRole("button", { name: "마지막 생각 고르기" }));
       fireEvent.click(screen.getAllByRole("checkbox")[2]);
-      fireEvent.click(screen.getByRole("button", { name: "가설 3 기록하기" }));
+      fireEvent.click(screen.getByRole("button", { name: "마지막 생각 기록하기" }));
       if (index < 2) {
         expect(screen.getByText("해당 없음 — 현재 자료에서는 별도의 제한적 가능성을 남기지 않았어요.")).toBeTruthy();
       }
@@ -143,9 +144,10 @@ describe("학생용 화면", () => {
     const comparisonChoices = screen.getAllByRole("radio");
     fireEvent.click(comparisonChoices[0]);
     fireEvent.click(comparisonChoices[3]);
-    fireEvent.click(screen.getByRole("button", { name: "가설 변화 기록표 보기" }));
+    fireEvent.click(screen.getByRole("button", { name: "내 생각 변화 보기" }));
     expect(screen.getByRole("heading", { name: "가설 변화 기록표" })).toBeTruthy();
     const record = within(screen.getByRole("region", { name: "세 사건의 가설 기록" }));
+    record.getAllByRole("button", { name: /기록 펼치기/ }).forEach((button) => fireEvent.click(button));
     expect(record.getAllByRole("heading", { level: 2 })).toHaveLength(3);
     expect(record.getAllByText("고른 근거")).toHaveLength(9);
   });
