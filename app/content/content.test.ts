@@ -2,10 +2,11 @@ import { describe, expect, it } from "vitest";
 import { assetManifest, caseBank, evidenceLabels } from "./caseBank";
 
 describe("검수된 정적 콘텐츠", () => {
-  it("이미지는 로컬 경로이며 KOGL 제1유형의 출처와 해시를 가진다", () => {
+  it("이미지는 로컬 생성본이며 참고 기록·해시를 가진다", () => {
     for (const asset of assetManifest) {
       expect(asset.localPath).toMatch(/^\/assets\/artifacts\//);
       expect(asset.localPath).not.toMatch(/^https?:/);
+      expect(asset.imageSource).toBe("ai-generated-learning-reconstruction");
       expect(asset.licenseType).toBe("KOGL-1");
       expect(asset.originalSha256).toMatch(/^[a-f0-9]{64}$/);
       expect(asset.derivativeSha256).toMatch(/^[a-f0-9]{64}$/);

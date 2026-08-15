@@ -13,6 +13,8 @@ describe("학생용 화면", () => {
     sourceButton.focus();
     fireEvent.click(sourceButton);
     const dialog = screen.getByRole("dialog", { name: "자료와 이미지 출처" });
+    expect(within(dialog).getByText(/이미지 생성 모델로 만든 학습용 재구성 이미지/)).toBeTruthy();
+    expect(within(dialog).getAllByText(/공식 소장품 기록\(참고\)/)).toHaveLength(3);
     const appRoot = document.querySelector("[data-app-root]");
     expect(dialog.closest(".dialog-backdrop")?.parentElement).toBe(document.body);
     expect(appRoot?.getAttribute("aria-hidden")).toBe("true");
@@ -30,6 +32,7 @@ describe("학생용 화면", () => {
     expect(document.activeElement).toBe(sourceButton);
 
     fireEvent.click(screen.getByRole("button", { name: "업데이트 내역" }));
+    expect(screen.getByText("2026-08-15 / 1.3.0 / 학습용 이미지 생성·교체")).toBeTruthy();
     expect(screen.getByText("2026-07-17 / 1.1.0 / 진행 안내와 선택 도움을 개선")).toBeTruthy();
     expect(screen.getByText("2026-07-17 / 1.0.0 / 최초 구현")).toBeTruthy();
   });

@@ -79,7 +79,7 @@ export function CasePanel({ caseFile, onComplete }: { caseFile: CaseFile; onComp
   return (
     <section aria-labelledby="case-title" className="case-panel">
       <CaseProgress step={step} />
-      <div className="case-banner"><span>실제 박물관 소장품 사진</span><span>{caseFile.artifact.institution}</span></div>
+      <div className="case-banner"><span>학습용 재구성 이미지</span><span>참고 기록 · {caseFile.artifact.institution}</span></div>
       <h1 id="case-title">{caseFile.caseTitle}</h1>
       <p className="case-question">{caseFile.question}</p>
       <p aria-live="polite" className="status-line">{message}</p>
@@ -88,7 +88,7 @@ export function CasePanel({ caseFile, onComplete }: { caseFile: CaseFile; onComp
         <p className="case-action" id="observe-action">사진을 보고, 눈으로 확인할 수 있는 특징 두 개를 고르세요.</p>
         <figure className="artifact-figure">
           <img alt={caseFile.imageAlt} src={asset.localPath} />
-          <figcaption>사진 출처: {asset.institution} · 공공누리 제1유형 · 자세한 기록은 자료와 이미지 출처에서 확인할 수 있어요.</figcaption>
+          <figcaption>AI 생성 학습용 재구성 이미지예요. {asset.institution}의 공식 기록을 참고했으며, 실제 소장품 사진이 아니에요. 자세한 기록은 자료와 이미지 출처에서 확인할 수 있어요.</figcaption>
         </figure>
         <fieldset>
           <legend>사진에서 직접 보이는 특징을 꼭 2개 고르세요 ({observations.length}/2)</legend>

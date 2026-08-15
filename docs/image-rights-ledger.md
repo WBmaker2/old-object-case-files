@@ -1,14 +1,14 @@
 # 이미지 권리 원장
 
-확인일: 2026-07-17  
-승인: 사용자는 세 공식 유물 사진의 공공누리 제1유형 사용, 출처 표기, 로컬 포함을 승인했습니다. 원본을 손상하지 않는 리사이즈·집중 자르기·WebP 변환은 승인 범위이나 실제 적용하지 않았습니다.
+확인일: 2026-08-15
+변경: 학습 화면에 표시하는 이미지를 모두 이미지 생성 모델로 만든 재구성 이미지로 교체했습니다. 아래 공식 기관 자료는 이미지의 사실성을 보증하는 사진 원본이 아니라, 생성 프롬프트와 학생용 관찰 특징을 정하는 참고 기록입니다.
 
 | 자산 | 기관·소장품 | 원문/이미지 | 라이선스 | 원본 SHA-256 | 앱 사용본 SHA-256 | 처리 |
 | --- | --- | --- | --- | --- | --- | --- |
-| `handaxe-original.jpg` | 국립중앙박물관 · 주먹도끼 `신수18710` | [기록](https://www.museum.go.kr/MUSEUM/contents/M0502000000.do?schM=view&searchId=search&relicId=5200) / [공식 JPEG](https://www.museum.go.kr/relic_image/PS01001001/ssu000/2024/1220164520928/ssu018710-000-90000.jpg) | 공공누리 제1유형 | `f8c8e55fa1c4c10c330f0c344012c6f5e432ee6544ce274b5d1642df78b38c39` | `f8c8e55fa1c4c10c330f0c344012c6f5e432ee6544ce274b5d1642df78b38c39` | 2200×3000 JPEG를 그대로 정적 자산으로 포함. 자르기·크기 변경·포맷 변환 없음. |
-| `figurine-lid-original.jpg` | 국립경주박물관 · 토우장식 뚜껑 `경주5772` | [기록](https://gyeongju.museum.go.kr/kor/html/sub04/0406.html?GotoPage=2&dvs_code=&mng_no=424&mode=V) / [공식 JPEG](https://gyeongju.museum.go.kr/_prog/download/?site_dvs_cd=kor&func_gbn_cd=relic_data&mng_no=424&atch=atch_img1) | 공공누리 제1유형 | `83c6e91aa5848f9a798628e9f4e653d5beb937594e453c9e15e72da19534e910` | `83c6e91aa5848f9a798628e9f4e653d5beb937594e453c9e15e72da19534e910` | 476×442 JPEG를 그대로 정적 자산으로 포함. 자르기·크기 변경·포맷 변환 없음. |
-| `celadon-die-original.jpg` | 국립중앙박물관 · 청자 상감 주사위 `덕수6421` | [기록](https://www.museum.go.kr/MUSEUM/contents/M0502000000.do?relicId=1495&schM=view&searchId=search) / [공식 JPEG](https://www.museum.go.kr/relic_image/PS01001001/duk006/2017/0512090608004/duk006421-00-00.jpg) | 공공누리 제1유형 | `c71c253f75e0d16a0287d3201f2b1a284f82a77b8d882d0510ea085bc960b651` | `c71c253f75e0d16a0287d3201f2b1a284f82a77b8d882d0510ea085bc960b651` | 3000×2000 JPEG를 그대로 정적 자산으로 포함. 자르기·크기 변경·포맷 변환 없음. |
+| `handaxe-learning-reconstruction.png` | 국립중앙박물관 · 주먹도끼 `신수18710` 참고 | [공식 기록](https://www.museum.go.kr/MUSEUM/contents/M0502000000.do?schM=view&searchId=search&relicId=5200) | 이미지 생성 모델 생성본 · 참고 기록은 공공누리 제1유형 | `73dc4ec7c5ab87590b1a5c66153c477319d11f12def5ba07e2ece0018daefb2f` | `73dc4ec7c5ab87590b1a5c66153c477319d11f12def5ba07e2ece0018daefb2f` | 뾰족한 끝·넓고 뭉툭한 부분·떼어 낸 듯한 면을 관찰할 수 있게 생성. |
+| `figurine-lid-learning-reconstruction.png` | 국립경주박물관 · 토우장식 뚜껑 `경주5772` 참고 | [공식 기록](https://gyeongju.museum.go.kr/kor/html/sub04/0406.html?GotoPage=2&dvs_code=&mng_no=424&mode=V) | 이미지 생성 모델 생성본 · 참고 기록은 공공누리 제1유형 | `d9b0ac8537bb24d82e5ebe0ad16c5b5991a044f4eb3581d31b112c4bed5159f8` | `d9b0ac8537bb24d82e5ebe0ad16c5b5991a044f4eb3581d31b112c4bed5159f8` | 둥근 뚜껑·뱀·개구리·작은 표현을 관찰할 수 있게 생성. |
+| `celadon-die-learning-reconstruction.png` | 국립중앙박물관 · 청자 상감 주사위 `덕수6421` 참고 | [공식 기록](https://www.museum.go.kr/MUSEUM/contents/M0502000000.do?relicId=1495&schM=view&searchId=search) | 이미지 생성 모델 생성본 · 참고 기록은 공공누리 제1유형 | `87e402db4501b05a691520d8f5b4b6c1cc32d184db6140ff20117461dd53bc84` | `87e402db4501b05a691520d8f5b4b6c1cc32d184db6140ff20117461dd53bc84` | 푸른빛 정육면체·여러 면의 점·매끈한 표면을 관찰할 수 있게 생성. |
 
-공통 출처 표시: 각 사진 인접 위치와 앱의 `자료와 이미지 출처` 대화상자에 기관명, 저작물명, 소장품번호, 공공누리 제1유형, 공식 기록 링크를 표시합니다. 라이선스 안내는 [공공누리 제1유형](https://www.kogl.or.kr/info/licenseType1.do)에서 확인합니다.
+공통 표시: 각 이미지 인접 위치와 앱의 `자료와 이미지 출처` 대화상자에 `AI 생성 학습용 재구성 이미지`임을 표시하고, 기관명·소장품번호·공식 기록 링크를 참고 자료로 연결합니다. 참고 기록의 이용 조건은 [공공누리 제1유형](https://www.kogl.or.kr/info/licenseType1.do)에서 확인합니다.
 
-제외 확인: 원격 이미지 핫링크, 생성·복원·업스케일·색상 복원·배경 생성·합성·물체 제거를 사용하지 않았습니다.
+제외 확인: 생성 이미지에는 글자·로고·워터마크를 넣지 않았고, 실제 박물관 사진처럼 표시하지 않습니다. 원격 이미지 핫링크는 사용하지 않습니다.

@@ -72,7 +72,7 @@ export function CaseFileApp() {
       <ActivityProgress caseIndex={caseIndex} phase={phase} />
 
       {phase === "start" && <section className="welcome-panel" aria-labelledby="welcome-title">
-        <p className="archive-mark">기록 보관함 · 실제 박물관 자료</p>
+        <p className="archive-mark">기록 보관함 · 공식 기록을 참고한 학습 자료</p>
         <h1 id="welcome-title">사진과 새 단서로<br />생각을 고쳐 보는 시간</h1>
         <p>유물 이름을 맞히는 퀴즈가 아니에요. 사진에서 보이는 것, 박물관이 적어 둔 내용, 아직 모르는 것을 나누어 살펴봐요. 가설은 단서를 보고 세운 지금의 생각이에요.</p>
         <p className="time-note">약 10~15분 · 사건 3개</p>
@@ -133,17 +133,18 @@ export function CaseFileApp() {
       <footer className="app-footer">정적 자료만 사용하며, 새로고침하면 이 활동 기록은 처음으로 돌아갑니다.</footer>
 
       <AppDialog isOpen={sourceOpen} onClose={() => setSourceOpen(false)} title="자료와 이미지 출처">
-        <p>모든 사진은 공식 기관에서 직접 내려받아 앱에 포함했습니다. 공공누리 제1유형의 출처 표시 조건을 따릅니다.</p>
+        <p>화면의 이미지는 모두 이미지 생성 모델로 만든 학습용 재구성 이미지예요. 실제 소장품 사진으로 오해하지 않도록, 각 유물의 공식 기록을 참고 자료로 함께 표시합니다.</p>
         <ul className="source-list">
           {assetManifest.map((asset) => <li key={asset.id}>
             <strong>{asset.artifactTitle} · {asset.collectionNumber}</strong><br />
             {asset.requiredCredit}<br />
-            <a href={asset.recordUrl} rel="noreferrer" target="_blank">공식 소장품 기록</a> · <a href={asset.licenseUrl} rel="noreferrer" target="_blank">공공누리 제1유형</a>
+            <a href={asset.recordUrl} rel="noreferrer" target="_blank">공식 소장품 기록(참고)</a>
           </li>)}
         </ul>
       </AppDialog>
       <AppDialog isOpen={updateOpen} onClose={() => setUpdateOpen(false)} title="업데이트 내역">
         <ul className="update-list">
+          <li><strong>2026-08-15 / 1.3.0 / 학습용 이미지 생성·교체</strong><br />세 유물 이미지를 이미지 생성 모델로 만든 재구성 이미지로 교체하고, 실제 소장품 사진이 아니라는 안내와 참고 기록을 덧붙였습니다.</li>
           <li><strong>2026-07-18 / 1.2.0 / 학생말과 기록 보기 방식을 개선</strong><br />어려운 말을 쉽게 풀고, 현재 할 일을 더 또렷하게 보여 주며, 긴 기록은 접어 볼 수 있게 했습니다.</li>
           <li><strong>2026-07-17 / 1.1.0 / 진행 안내와 선택 도움을 개선</strong><br />전체·사건 진행 표시, 선택 전 기록 안내, 실수 방지 초기화 확인, 모바일 조작 영역을 보완했습니다.</li>
           <li>2026-07-17 / 1.0.0 / 최초 구현</li>

@@ -10,6 +10,7 @@ export type HypothesisSupport =
 export interface AssetAttribution {
   id: string;
   localPath: string;
+  imageSource: "museum-original" | "ai-generated-learning-reconstruction";
   originalFileName: string;
   institution: string;
   artifactTitle: string;
