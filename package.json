@@ -9,10 +9,11 @@
     "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext dev",
     "build": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext build",
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
+    "build:pages": "vite build --config vite.pages.config.ts",
     "test": "npm run test:unit && npm run build && node --test tests/rendered-html.test.mjs && npm run audit",
     "test:unit": "vitest run",
     "audit": "node scripts/audit-content.mjs && node scripts/audit-code-size.mjs",
-    "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
+    "lint": "eslint . --ignore-pattern dist --ignore-pattern dist-pages --ignore-pattern .next",
     "db:generate": "drizzle-kit generate"
   },
   "dependencies": {
