@@ -144,6 +144,7 @@ export function CaseFileApp() {
       </AppDialog>
       <AppDialog isOpen={updateOpen} onClose={() => setUpdateOpen(false)} title="업데이트 내역">
         <ul className="update-list">
+          <li><strong>2026-08-16 / 1.3.1 / GitHub Pages 이미지 경로 수정</strong><br />하위 경로에서 이미지가 보이지 않던 문제를 고쳐 현재 페이지 기준 상대 주소로 연결했습니다.</li>
           <li><strong>2026-08-15 / 1.3.0 / 학습용 이미지 생성·교체</strong><br />세 유물 이미지를 이미지 생성 모델로 만든 재구성 이미지로 교체하고, 실제 소장품 사진이 아니라는 안내와 참고 기록을 덧붙였습니다.</li>
           <li><strong>2026-07-18 / 1.2.0 / 학생말과 기록 보기 방식을 개선</strong><br />어려운 말을 쉽게 풀고, 현재 할 일을 더 또렷하게 보여 주며, 긴 기록은 접어 볼 수 있게 했습니다.</li>
           <li><strong>2026-07-17 / 1.1.0 / 진행 안내와 선택 도움을 개선</strong><br />전체·사건 진행 표시, 선택 전 기록 안내, 실수 방지 초기화 확인, 모바일 조작 영역을 보완했습니다.</li>

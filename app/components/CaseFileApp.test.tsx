@@ -32,6 +32,7 @@ describe("학생용 화면", () => {
     expect(document.activeElement).toBe(sourceButton);
 
     fireEvent.click(screen.getByRole("button", { name: "업데이트 내역" }));
+    expect(screen.getByText("2026-08-16 / 1.3.1 / GitHub Pages 이미지 경로 수정")).toBeTruthy();
     expect(screen.getByText("2026-08-15 / 1.3.0 / 학습용 이미지 생성·교체")).toBeTruthy();
     expect(screen.getByText("2026-07-17 / 1.1.0 / 진행 안내와 선택 도움을 개선")).toBeTruthy();
     expect(screen.getByText("2026-07-17 / 1.0.0 / 최초 구현")).toBeTruthy();
@@ -71,6 +72,15 @@ describe("학생용 화면", () => {
     fireEvent.click(screen.getByRole("button", { name: "오래된 물건 사건파일" }));
     fireEvent.click(screen.getByRole("button", { name: "기록을 지우고 처음으로" }));
     expect(screen.getByRole("heading", { name: /사진과 새 단서로\s*생각을 고쳐 보는 시간/ })).toBeTruthy();
+  });
+
+  it("사진 주소를 현재 페이지 기준 상대 경로로 연결한다", () => {
+    render(<CaseFileApp />);
+    fireEvent.click(screen.getByRole("button", { name: "탐구 방법 먼저 보기" }));
+    fireEvent.click(screen.getByRole("button", { name: "첫 사건 열기" }));
+    fireEvent.click(screen.getByRole("button", { name: "사진 관찰 시작하기" }));
+
+    expect(screen.getByRole("img").getAttribute("src")).toBe("assets/artifacts/generated/handaxe-learning-reconstruction.png");
   });
 
   it("네 정보 상태를 말로 보여 주고, 가설 기록을 지우지 않는다", () => {

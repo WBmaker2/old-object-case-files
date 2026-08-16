@@ -1,5 +1,5 @@
 "use client";
-/* eslint-disable @next/next/no-img-element -- verified museum JPEGs stay as unmodified local static files. */
+/* eslint-disable @next/next/no-img-element -- generated learning images are bundled local static files. */
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { findAsset, findHypothesis } from "../content/caseBank";
@@ -87,7 +87,7 @@ export function CasePanel({ caseFile, onComplete }: { caseFile: CaseFile; onComp
       {step === "observe" && <div className="case-step">
         <p className="case-action" id="observe-action">사진을 보고, 눈으로 확인할 수 있는 특징 두 개를 고르세요.</p>
         <figure className="artifact-figure">
-          <img alt={caseFile.imageAlt} src={asset.localPath} />
+          <img alt={caseFile.imageAlt} src={asset.localPath.replace(/^\/+/, "")} />
           <figcaption>AI 생성 학습용 재구성 이미지예요. {asset.institution}의 공식 기록을 참고했으며, 실제 소장품 사진이 아니에요. 자세한 기록은 자료와 이미지 출처에서 확인할 수 있어요.</figcaption>
         </figure>
         <fieldset>
